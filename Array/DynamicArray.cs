@@ -26,7 +26,7 @@ namespace Array
             // set capacity in length
             this.capacity = capacity;
             // create array type T with size = capacity
-            _array = new (T[]) Object[capacity];
+            _array = new T[capacity];
         }
 
         public int Size()
@@ -34,22 +34,22 @@ namespace Array
             return this.size;
         }
 
-        public bool isEmpty()
+        public bool IsEmpty()
         {
             return this.Size() == 0;
         }
 
-        public T getValue(int index)
+        public T GetValue(int index)
         {
             return _array[index];
         }
 
-        public void setValue(int index, T element)
+        public void SetValue(int index, T element)
         {
             _array[index] = element;
         }
 
-        public void clear()
+        public void Clear()
         {
             for (int i = 0; i < this.size; i++)
             {
@@ -75,13 +75,6 @@ namespace Array
                 {
                     newArr[i] = _array[i];
                 }
-
-                //for(int i = index; i < size; i++)
-                //{
-                //    newArr[i + 1] = newArr[i];
-                //}
-                //newArr[index] = element;
-                //size++;
                 _array = newArr; 
                 
             }
@@ -106,25 +99,65 @@ namespace Array
             capacity = --size;
         }
 
-        //public void Remove(T element)
-        //{
-        //    int removeIndex = indexOf(element);
-        //    this.RemoveAt(removeIndex);
-        //}
+        public void Remove(T element)
+        {
+            int removeIndex = IndexOf(element);
+            this.RemoveAt(removeIndex);
+        }
 
-        //private int indexOf(T? element)
-        //{
-            
-        //}
+        public int IndexOf(T? element)
+        {
+            for (int i = 0; i < size; i++)
+            {
+                if (element == null)
+                {
+                    if (_array[i] == null) return i;
+                }
+                else
+                {
+                    if(element.Equals(_array[i])) return i;
+                }
+            }
+            return -1;
+        }
+
+        public bool Contain(T element)
+        {
+            return IndexOf(element) != -1;
+        }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return null;
+            for(int i = 0; i < size; i++)
+            {
+                yield return _array[i];
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        public override string ToString()
+        {
+            if (IsEmpty()) return "[]";
+            StringBuilder sb = new StringBuilder();
+            sb.Append("["); 
+            for (int i = 0; i < size; i++)
+            {
+                if (i == size - 1)
+                {
+                    sb.Append(_array[i]);
+                } 
+                else
+                {
+                    sb.Append(_array[i]);
+                    sb.Append(", ");
+                }
+            }
+            sb.Append("]");
+            return sb.ToString();
         }
     }
 }
