@@ -25,9 +25,9 @@ namespace LinkedList
         // O(1)
         T PeekLast();
         // O(1)
-        T RemovewFirst();
+        T RemoveFirst();
         // O(1)
-        T RemovewLast();
+        T RemoveLast();
         // O(n)
         T Remove(Node<T> node);
         bool Remove(object obj);
