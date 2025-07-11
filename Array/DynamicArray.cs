@@ -99,6 +99,15 @@ namespace Array
             capacity = --size;
         }
 
+        public T RemoveAtWithoutMoving(int removeIndex)
+        {
+            if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
+            T item = _array[removeIndex];
+            _array[removeIndex] = default(T);
+            capacity = --size;
+            return item;
+        }
+
         public void Remove(T element)
         {
             int removeIndex = IndexOf(element);
