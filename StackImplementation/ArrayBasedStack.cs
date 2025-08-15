@@ -20,7 +20,7 @@ namespace StackImplementation
 
         public bool IsEmpty()
         {
-            throw new NotImplementedException();
+            return _array.IsEmpty();
         }
 
         public T Pop()
