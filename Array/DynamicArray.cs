@@ -2,61 +2,76 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Array
 {
-    public class DynamicArray<T> : IEnumerable<T>
+    public class DynamicArray<T> : IEnumerable<T> 
     {
         public T[] _array;
         public int capacity = 0;
         public int size = 0;
 
-        public DynamicArray() : this(10) { }
+        public DynamicArray() : this(10) { }   
 
         public DynamicArray(int capacity)
         {
-            // check data if capacity -1, -2, => throw exp
             if (capacity < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(capacity), "Capacity is non-negative!!!" + capacity);
             }
-            // set capacity in length
             this.capacity = capacity;
-            // create array type T with size = capacity
+
             _array = new T[capacity];
         }
+
+        // this(10)
+
+        // capacity < 0 throw exception
+        // _array = new T[capacity]
+
 
         public int Size()
         {
             return this.size;
         }
 
+        // return this.size
+
         public bool IsEmpty()
         {
             return this.Size() == 0;
         }
+
+        // this.Size() == 0;
 
         public T GetValue(int index)
         {
             return _array[index];
         }
 
+        // return _array[index]
+
         public void SetValue(int index, T element)
         {
             _array[index] = element;
         }
 
+        // _array[index] = element
+
         public void Clear()
         {
             for (int i = 0; i < this.size; i++)
             {
-                _array[i] = default(T);
+                _array[i] = default;
             }
             this.size = 0;
         }
+
+        // forech elements in _array -> set null
 
         public void Add(T element)
         {
@@ -81,6 +96,13 @@ namespace Array
             _array[size++] = element;
         }
 
+        // Add(T element) -> 
+        // capacity < size -1 double size
+        // capacity = 0 => capacity = 1;
+        // create new array with double capacity
+        // override old array by new array
+        // arr[size++] = element;
+
         public void RemoveAt(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
@@ -99,11 +121,16 @@ namespace Array
             capacity = --size;
         }
 
+        // loop parallel if = indexToRemove then newIndex-- (because new array has less than 1 element)
+        // _array = newArray
+        // capacity = --size;
+
+        // that method serve for stack implementation
         public T RemoveAtWithoutMoving(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
             T item = _array[removeIndex];
-            _array[removeIndex] = default(T);
+            _array[removeIndex] = default;
             capacity = --size;
             return item;
         }
@@ -113,6 +140,8 @@ namespace Array
             int removeIndex = IndexOf(element);
             this.RemoveAt(removeIndex);
         }
+
+        // removeIndex = IndexOf (core method)
 
         public int IndexOf(T? element)
         {
@@ -130,14 +159,18 @@ namespace Array
             return -1;
         }
 
+        // foreach elemeent in _array if == null and == element return index; else return - 1;
+
         public bool Contain(T element)
         {
             return IndexOf(element) != -1;
         }
 
+        // index of element has value! -> return true;
+
         public IEnumerator<T> GetEnumerator()
         {
-            for(int i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
                 yield return _array[i];
             }
@@ -168,5 +201,7 @@ namespace Array
             sb.Append("]");
             return sb.ToString();
         }
+
+        // loop through every element of the _array and then use StringBuilder to concatenation element with ',' and the last element don't add ','
     }
 }
