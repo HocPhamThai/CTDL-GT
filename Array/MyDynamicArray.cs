@@ -56,7 +56,7 @@ namespace Array
 
         public void Add(T element)
         {
-           if(size >= this.capacity - 1)
+           if(size >= this.capacity - 1) // Còn 1 chỗ trống thì tăng gấp đôi sức chứa của array
            {
                 if (this.capacity == 0)
                 {
@@ -78,7 +78,7 @@ namespace Array
 
         public T RemoveAt(int removeIndex)
         {
-            if (removeIndex < 0 || removeIndex > capacity - 1) throw new IndexOutOfRangeException("Out of capacity");
+            if (removeIndex < 0 || removeIndex > capacity - 1) throw new ArgumentOutOfRangeException(nameof(removeIndex));
             
             T itemToRemove = _array[removeIndex];
             T[] newArr = new T[size - 1];
@@ -94,6 +94,21 @@ namespace Array
 
             _array = newArr;
             capacity = --size;
+            return itemToRemove;
+        }
+
+        public T RemoveAtNotMinusSize(int index) 
+        {
+            if (index < 0 || index >= size) throw new ArgumentOutOfRangeException(nameof(index));
+
+            T itemToRemove = _array[index];
+            
+            for (int i = index + 1; i < size; i++)
+            {
+                _array[i - 1] = _array[i];
+            }
+
+            _array[size--] = default;
             return itemToRemove;
         }
 
@@ -140,9 +155,9 @@ namespace Array
         {
             if (IsEmpty()) return "[]";
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new();
             
-            sb.Append("[");
+            sb.Append('[');
             for(int i = 0; i < this.size; i++)
             {
                 if (i == size - 1)
@@ -154,7 +169,7 @@ namespace Array
                     sb.Append(_array[i]); sb.Append(", ");
                 }
             }
-            sb.Append("]");
+            sb.Append(']');
 
             return sb.ToString();
         }
