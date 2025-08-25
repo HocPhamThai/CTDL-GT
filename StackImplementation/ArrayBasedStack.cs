@@ -13,6 +13,8 @@ namespace StackImplementation
         private DynamicArray<T> _array;
         private int index = -1;
 
+        public ArrayBasedStack() : this(10) { }
+
         public ArrayBasedStack(int capacity = 10)
         {
             _array = new DynamicArray<T>(capacity);

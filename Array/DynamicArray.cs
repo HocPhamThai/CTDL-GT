@@ -15,8 +15,12 @@ namespace Array
         public int capacity = 0;
         public int size = 0;
 
+        // this(10)
         public DynamicArray() : this(10) { }   
 
+
+        // capacity < 0 throw exception
+        // _array = new T[capacity]
         public DynamicArray(int capacity)
         {
             if (capacity < 0)
@@ -28,40 +32,36 @@ namespace Array
             _array = new T[capacity];
         }
 
-        // this(10)
 
-        // capacity < 0 throw exception
-        // _array = new T[capacity]
-
-
+        // return this.size
         public int Size()
         {
             return this.size;
         }
 
-        // return this.size
 
+        // this.Size() == 0;
         public bool IsEmpty()
         {
             return this.Size() == 0;
         }
 
-        // this.Size() == 0;
 
+        // return _array[index]
         public T GetValue(int index)
         {
             return _array[index];
         }
 
-        // return _array[index]
 
+        // _array[index] = element
         public void SetValue(int index, T element)
         {
             _array[index] = element;
         }
 
-        // _array[index] = element
 
+        // forech elements in _array -> set null
         public void Clear()
         {
             for (int i = 0; i < this.size; i++)
@@ -71,8 +71,13 @@ namespace Array
             this.size = 0;
         }
 
-        // forech elements in _array -> set null
 
+        // Add(T element) -> 
+        // capacity < size -1 double size
+        // capacity = 0 => capacity = 1;
+        // create new array with double capacity
+        // override old array by new array
+        // arr[size++] = element;
         public void Add(T element)
         {
             // capacity = 1 => size = 0;
@@ -96,13 +101,11 @@ namespace Array
             _array[size++] = element;
         }
 
-        // Add(T element) -> 
-        // capacity < size -1 double size
-        // capacity = 0 => capacity = 1;
-        // create new array with double capacity
-        // override old array by new array
-        // arr[size++] = element;
+        // loop parallel if = indexToRemove then newIndex-- (because new array has less than 1 element)
+        // _array = newArray
+        // capacity = --size;
 
+        // that method serve for stack implementation
         public void RemoveAt(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
@@ -121,11 +124,7 @@ namespace Array
             capacity = --size;
         }
 
-        // loop parallel if = indexToRemove then newIndex-- (because new array has less than 1 element)
-        // _array = newArray
-        // capacity = --size;
 
-        // that method serve for stack implementation
         public T RemoveAtWithoutMoving(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
@@ -135,14 +134,15 @@ namespace Array
             return item;
         }
 
+        // removeIndex = IndexOf (core method)
         public void Remove(T element)
         {
             int removeIndex = IndexOf(element);
             this.RemoveAt(removeIndex);
         }
 
-        // removeIndex = IndexOf (core method)
 
+        // foreach elemeent in _array if == null and == element return index; else return - 1;
         public int IndexOf(T? element)
         {
             for (int i = 0; i < size; i++)
@@ -159,14 +159,13 @@ namespace Array
             return -1;
         }
 
-        // foreach elemeent in _array if == null and == element return index; else return - 1;
 
+        // index of element has value! -> return true;
         public bool Contain(T element)
         {
             return IndexOf(element) != -1;
         }
 
-        // index of element has value! -> return true;
 
         public IEnumerator<T> GetEnumerator()
         {

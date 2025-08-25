@@ -14,7 +14,7 @@ namespace LinkedList
             while (currentNode != null)
             {
                 Node<T> nextNode = currentNode.Next;
-                currentNode.Data = default(T);
+                currentNode.Data = default;
                 currentNode.Prev = null;
                 currentNode.Next = null;
                 currentNode = nextNode;
@@ -132,7 +132,8 @@ namespace LinkedList
             {
                 throw new InvalidOperationException("LinkedList is empty!!!");
             }
-            return head.Data;
+            // head is guaranteed non-null here due to IsEmpty() check
+            return head!.Data;
         }
 
         public T PeekLast()
@@ -141,7 +142,7 @@ namespace LinkedList
             {
                 throw new InvalidOperationException("LinkedList is empty!!!");
             }
-            return tail.Data;
+            return tail!.Data;
         }
 
 
@@ -174,7 +175,7 @@ namespace LinkedList
             // Clear the node to help with garbage collection
             node.Prev = null;
             node.Next = null;
-            node.Data = default(T);
+            node.Data = default;
             node = null;
 
             return data;

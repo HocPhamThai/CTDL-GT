@@ -108,7 +108,7 @@ namespace Array
                 _array[i - 1] = _array[i];
             }
 
-            _array[size--] = default;
+            _array[--size] = default(T);
             return itemToRemove;
         }
 
