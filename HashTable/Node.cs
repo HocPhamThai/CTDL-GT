@@ -18,22 +18,19 @@ namespace HashTable
         public V Value { get => this.value; set => this.value = value; }
 
 
-        public Node(int hash, K key, V value)
+        public Node(K key, V value)
         {
+            this.hash = key?.GetHashCode() ?? 0;
             this.key = key;
-            this.hash = key.GetHashCode();
             this.value = value;
         }
 
         public bool Equals(Node<K,V> other)
         {
-            if (other.hash != this.hash) return false;
+            if (other is null || other.hash != this.hash) return false;
             return this.Key.Equals(other.key);
         }
 
-        public override string ToString()
-        {
-            return base.ToString();
-        }
+        public override string ToString() => $"{Key}: {Value}";
     }
 }

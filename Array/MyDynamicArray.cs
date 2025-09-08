@@ -14,7 +14,7 @@ namespace Array
         public int size = 0;
         public int capacity = 0;
         
-        public MyDynamicArray() : this(10){}
+        public MyDynamicArray() : this(10) { }
 
         public MyDynamicArray(int capacity)
         {

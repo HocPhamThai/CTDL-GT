@@ -10,8 +10,9 @@ namespace HashTable
     {
         int Size();
         bool IsEmpty();
+        void Clear();
         // hash code
-        int HashCodeToIndex(K key);
+        int HashCodeToIndex(int hashedKey);
         bool Has(K key);
         V Insert(K key, V value);
         V Get(K key);

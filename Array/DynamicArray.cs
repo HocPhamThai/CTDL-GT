@@ -104,8 +104,6 @@ namespace Array
         // loop parallel if = indexToRemove then newIndex-- (because new array has less than 1 element)
         // _array = newArray
         // capacity = --size;
-
-        // that method serve for stack implementation
         public void RemoveAt(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
@@ -125,6 +123,7 @@ namespace Array
         }
 
 
+        // that method serve for stack implementation
         public T RemoveAtWithoutMoving(int removeIndex)
         {
             if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
