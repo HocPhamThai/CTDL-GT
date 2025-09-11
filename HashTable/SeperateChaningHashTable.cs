@@ -51,7 +51,7 @@ namespace HashTable
 
         public int HashCodeToIndex(int hashedKey)
         {
-            return (int)(hashedKey & 0xFFFFFFFFL) % capacity;
+            return (int)(hashedKey & 0xFFFFFFF) % capacity;
         }
 
         public bool Has(K key)
@@ -125,18 +125,12 @@ namespace HashTable
                         Node<K, V> node = enumerator.Current;
 
                         int index = HashCodeToIndex(node.Hash);
-                        DoublyLinkedList<Node<K,V>> linkedList = newTable[index];
 
-                        linkedList ??= newTable[index] ??= new DoublyLinkedList<Node<K, V>>();
-                        linkedList.Add(node);
+                        (newTable[index] ??= new DoublyLinkedList<Node<K, V>>()).Add(node);
                     }
-                }
-
-                if (table[i] != null)
-                {
                     table[i].Clear();
+                    table[i] = null;
                 }
-                table[i] = null;
             }
             this.table = newTable;
         }

@@ -14,7 +14,7 @@ namespace HashTable
 
 
         public int Hash { get => this.hash; set => this.hash = value; }
-        public K Key { get => this.key; set => this.key = value; }
+        public K Key { get => this.key; }
         public V Value { get => this.value; set => this.value = value; }
 
 
