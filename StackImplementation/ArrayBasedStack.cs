@@ -10,7 +10,7 @@ namespace StackImplementation
 {
     public class ArrayBasedStack<T> : StackADT<T>
     {
-        private DynamicArray<T> _array;
+        private readonly DynamicArray<T> _array;
         private int index = -1;
 
         public ArrayBasedStack() : this(10) { }

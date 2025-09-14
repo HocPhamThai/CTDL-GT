@@ -8,24 +8,27 @@ namespace LinkedList
         private int size;
         private Node<T>? head = null;
         private Node<T>? tail = null;
+
         public void Clear()
         {
             Node<T>? currentNode = head;
             while (currentNode != null)
             {
                 Node<T>? nextNode = currentNode.Next;
-                currentNode.Data = default!;
-                currentNode.Prev = null;
-                currentNode.Next = null;
+
+                currentNode.Prev = null; currentNode.Data = default!; currentNode.Next = null;
+                
                 currentNode = nextNode;
             }
             head = tail = null;
             size = 0;
         }
+        
         public int Size()
         {
             return size;
         }
+        
         public bool IsEmpty()
         {
             return size == 0;
@@ -102,25 +105,14 @@ namespace LinkedList
             int index = 0;
             Node<T>? currNode = head;
 
-            if (obj == null)
+            while (currNode != null)
             {
-                while (currNode != null)
+                if (Equals(currNode.Data, obj)) // Null-safe comparison
                 {
-                    if (currNode.Data.Equals(obj))
-                        return index;
-                    currNode = currNode.Next;
-                    index++;
+                    return index;
                 }
-            }
-            else
-            {
-                while (currNode != null)
-                {
-                    if (currNode.Data.Equals(obj))
-                        return index;
-                    currNode = currNode.Next;
-                    index++;
-                }
+                currNode = currNode.Next;
+                index++;
             }
             return -1;
         }
@@ -173,19 +165,15 @@ namespace LinkedList
             }
 
             // Clear the node to help with garbage collection
-            node.Prev = null;
-            node.Next = null;
-            node.Data = default;
+            node.Prev = null; node.Data = default; node.Next = null;
             node = null;
 
             return data;
         }
         public T RemoveFirst()
         {
-            if (IsEmpty())
-            {
-                throw new InvalidOperationException("LinkedList is empty!!!");
-            }
+            if (IsEmpty()) throw new InvalidOperationException("LinkedList is empty!!!");
+            
             T data = head!.Data;
             head = head.Next;
             size--;
@@ -201,13 +189,12 @@ namespace LinkedList
         }
         public T RemoveLast()
         {
-            if (IsEmpty())
-            {
-                throw new InvalidOperationException("LinkedList is empty!!!");
-            }
+            if (IsEmpty()) throw new InvalidOperationException("LinkedList is empty!!!");
+
             T data = tail!.Data;
             tail = tail.Prev;
             size--;
+
             if (IsEmpty())
             {
                 head = null;
@@ -229,29 +216,14 @@ namespace LinkedList
         {
             Node<T>? currNode = head;
 
-            if (obj == null)
+            while (currNode != null)
             {
-                while (currNode != null)
+                if (Equals(currNode.Data, obj))
                 {
-                    if (currNode.Data == null)
-                    {
-                        Remove(currNode);
-                        return true;
-                    }
-                    currNode = currNode.Next;
+                    Remove(currNode);
+                    return true;
                 }
-            }
-            else
-            {
-                while (currNode != null)
-                {
-                    if (obj.Equals(currNode.Data))
-                    {
-                        Remove(currNode);
-                        return true;
-                    }
-                    currNode = currNode.Next;
-                }
+                currNode = currNode.Next;
             }
 
             return false;

@@ -14,7 +14,7 @@ namespace LinkedList
 
         public Node(T data, Node<T>? prev, Node<T>? next)
         {
-            Data = data ?? throw new ArgumentNullException(nameof(data)); // Ensure Data is not null
+            Data = data; // Ensure Data is not null
             Prev = prev;
             Next = next;
         }

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,19 +12,17 @@ namespace Array
 {
     public class MyDynamicArray<T> : IEnumerable<T>
     {
-        public T[] _array;
-        public int size = 0;
-        public int capacity = 0;
-        
+        private T[] _arr;
+        private int size = 0, capacity = 0;
+
         public MyDynamicArray() : this(10) { }
 
         public MyDynamicArray(int capacity)
         {
-            if (capacity < 0) throw new ArgumentOutOfRangeException(nameof(capacity));
-            
-            this.capacity = capacity;
+            if (capacity <= 0) throw new ArgumentOutOfRangeException(nameof(capacity));
 
-            this._array = new T[capacity];
+            this.capacity = capacity;
+            _arr = new T[this.capacity];
         }
 
         public int Size()
@@ -32,182 +32,118 @@ namespace Array
 
         public bool IsEmpty()
         {
-            return this.Size() == 0;
-        }
-
-        public T GetValue(int index)
-        {
-            return _array[index];
-        }
-
-        public void SetValue(int index, T element)
-        {
-            _array[index] = element;
+            return this.size == 0;
         }
 
         public void Clear()
         {
-            for(int i = 0; i < this.size; i++)
+            for (int i = 0; i < size; i++)
             {
-                _array[i] = default;
+                _arr[i] = default;
             }
             this.size = 0;
         }
 
-        public void Add(T element)
+        public bool Contain(T item)
         {
-           if(size >= this.capacity - 1) // Còn 1 chỗ trống thì tăng gấp đôi sức chứa của array
-           {
-                if (this.capacity == 0)
+            return IndexOf(item) != -1;
+        }
+
+        public T GetValue(int index)
+        {
+            return _arr[index];
+        }
+
+        public void SetValue(int index, T item)
+        {
+            _arr[index] = item;
+        }
+
+        public void Add(T item)
+        {
+            if (size >= capacity - 1)
+            {
+                if (capacity == 0)
                 {
                     this.capacity = 1;
                 }
                 this.capacity *= 2;
 
-                T[] newArr = new T[capacity];
-                for(int i = 0; i < newArr.Length; i++)
+                T[] newArr = new T[this.capacity];
+                for (int i = 0; i < size; i++)
                 {
-                    newArr[i] = _array[i];
+                    newArr[i] = _arr[i];
                 }
-
-                _array = newArr;
-           }
-
-           _array[size++] = element;
+                _arr = newArr;
+            }
+            _arr[size++] = item;
         }
 
         public T RemoveAt(int removeIndex)
         {
-            if (removeIndex < 0 || removeIndex > capacity - 1) throw new ArgumentOutOfRangeException(nameof(removeIndex));
-            
-            T itemToRemove = _array[removeIndex];
-            T[] newArr = new T[size - 1];
+            if (removeIndex < 0 || removeIndex >= size) throw new IndexOutOfRangeException(nameof(removeIndex));
 
-            for (int oldIndex = 0, newIndex = 0; oldIndex < size; oldIndex++, newIndex++)  
+            T item = _arr[removeIndex];
+            T[] newArr = new T[size--];
+
+            for (int oldIndex = 0, newIndex = 0; oldIndex < size; oldIndex++, newIndex++) 
             {
                 if (oldIndex == removeIndex) newIndex--;
-                else
-                {
-                    newArr[newIndex] =  _array[oldIndex];  
-                }
+                else 
+                    newArr[newIndex] = _arr[oldIndex];
             }
 
-            _array = newArr;
+            _arr = newArr;
             capacity = --size;
-            return itemToRemove;
+            return item;
         }
 
-        public T RemoveAtNotMinusSize(int index) 
+        public void Remove(T item)
         {
-            if (index < 0 || index >= size) throw new ArgumentOutOfRangeException(nameof(index));
+            this.RemoveAt(IndexOf(item));
+        }
 
-            T itemToRemove = _array[index];
-            
-            for (int i = index + 1; i < size; i++)
+        public int IndexOf(T item)
+        {
+            for (int i = 0; i < size; i++)
             {
-                _array[i - 1] = _array[i];
-            }
-
-            _array[--size] = default(T);
-            return itemToRemove;
-        }
-
-        public T Remove(T obj)
-        {
-            int indexRemove = IndexOf(obj);
-            return this.RemoveAt(indexRemove);
-        }
-
-        public int IndexOf(T element)
-        {
-            for (int i = 0; i < _array.Length; i++) 
-            {
-                if (element == null)
+                if (Equals(_arr[i], item))
                 {
-                    if (_array[i] == null) return i;
-                } 
-                else
-                {
-                    if (element.Equals(_array[i])) return i;
+                    return i;
                 }
             }
-
-            return -1;
-        }
-
-
-        public bool Contain(T element)
-        {
-            return IndexOf(element) != -1;
+            return -1; 
         }
 
         public IEnumerator<T> GetEnumerator()
         {
-            return new MyIntegerEnumarator<T>(_array);
+            for (int i = 0; i < size; i++)
+            {
+                yield return _arr[i];
+            }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         public override string ToString()
         {
-            if (IsEmpty()) return "[]";
-
             StringBuilder sb = new();
-            
             sb.Append('[');
-            for(int i = 0; i < this.size; i++)
+
+            for(int i = 0; i < size; i++)
             {
                 if (i == size - 1)
                 {
-                    sb.Append(_array[i]);
-                }
+                    sb.Append(_arr[i]);
+                } 
                 else
                 {
-                    sb.Append(_array[i]); sb.Append(", ");
+                    sb.Append(_arr[i]); sb.Append(", ");
                 }
             }
+
             sb.Append(']');
-
             return sb.ToString();
-        }
-
-        private class MyIntegerEnumarator<T> : IEnumerator<T>
-        {
-            private readonly T[] _arr;
-            private int _currentIndex = -1;
-
-            public MyIntegerEnumarator(T[] arr)
-            {
-                _arr = arr;
-            }
-
-            public T Current
-            {
-                get {
-                    return _arr[_currentIndex];
-                }
-            }                       
-
-            object IEnumerator.Current => Current;
-
-            public void Dispose()
-            {
-                // No resources to release
-            }
-
-            public bool MoveNext()
-            {
-                _currentIndex++;
-                return _currentIndex < _arr.Length;
-            }
-
-            public void Reset()
-            {
-               _currentIndex = -1;
-            }
         }
     }
 }

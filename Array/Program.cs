@@ -16,7 +16,7 @@
             Console.WriteLine("Get value at index 0: " + ints.GetValue(0));
             ints.Remove(3);
             Console.WriteLine("Remove 3: ");
-            ints.RemoveAtNotMinusSize(1);
+            //ints.RemoveAtNotMinusSize(1);
             Console.WriteLine(ints.ToString());
             Console.WriteLine("Get size of Array: " + ints.Size());
             Console.WriteLine(ints.ToString());
@@ -25,9 +25,7 @@
             Console.WriteLine("Index of 4: " + ints.IndexOf(4));
             ints.Clear();
             Console.WriteLine("Clear: ");
-            foreach (int i in ints) {
-                Console.WriteLine(i);
-            }
+            Console.WriteLine(ints.ToString());
         }
     }
 }

@@ -106,7 +106,7 @@ namespace Array
         // capacity = --size;
         public void RemoveAt(int removeIndex)
         {
-            if (removeIndex >= capacity || removeIndex < 0) throw new IndexOutOfRangeException();
+            if (removeIndex >= size || removeIndex < 0) throw new IndexOutOfRangeException();
 
             T[] newArray = new T[size - 1];
 
@@ -136,24 +136,16 @@ namespace Array
         // removeIndex = IndexOf (core method)
         public void Remove(T element)
         {
-            int removeIndex = IndexOf(element);
-            this.RemoveAt(removeIndex);
+            this.RemoveAt(IndexOf(element));
         }
 
 
         // foreach elemeent in _array if == null and == element return index; else return - 1;
-        public int IndexOf(T? element)
+        public int IndexOf(T element)
         {
             for (int i = 0; i < size; i++)
             {
-                if (element == null)
-                {
-                    if (_array[i] == null) return i;
-                }
-                else
-                {
-                    if(element.Equals(_array[i])) return i;
-                }
+                if (Equals(element, _array[i])) return i;
             }
             return -1;
         }
@@ -182,13 +174,15 @@ namespace Array
         public override string ToString()
         {
             if (IsEmpty()) return "[]";
-            StringBuilder sb = new StringBuilder();
-            sb.Append("["); 
+
+            StringBuilder sb = new();
+            sb.Append('['); 
             for (int i = 0; i < size; i++)
             {
                 if (i == size - 1)
                 {
                     sb.Append(_array[i]);
+                    sb.Append(']');
                 } 
                 else
                 {
@@ -196,7 +190,6 @@ namespace Array
                     sb.Append(", ");
                 }
             }
-            sb.Append("]");
             return sb.ToString();
         }
 

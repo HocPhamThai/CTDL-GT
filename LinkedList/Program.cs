@@ -4,12 +4,14 @@ class Program
 {
     static void Main()
     {
-        var list = new DoublyLinkedList<int>();
+        var list = new DoublyLinkedList<int?>();
 
         // Test AddLast và AddFirst
-        list.AddLast(1);
-        list.AddLast(2);
-        list.AddFirst(0);
+        list.Add(1);
+        list.Add(2);
+        list.Add(null);
+        list.Add(1);
+        list.Add(0);
 
         Console.WriteLine("Danh sách sau khi thêm:" + list.ToString());
 
@@ -21,11 +23,11 @@ class Program
         Console.WriteLine("Phần tử cuối: " + list.PeekLast()); // 2
 
         // Test RemoveFirst
-        int removedFirst = list.RemoveFirst();
+        int? removedFirst = list.RemoveFirst();
         Console.WriteLine("Đã xóa đầu: " + removedFirst); // 0
 
         // Test RemoveLast
-        int removedLast = list.RemoveLast();
+        int? removedLast = list.RemoveLast();
         Console.WriteLine("Đã xóa cuối: " + removedLast); // 2
 
         // Test còn lại
