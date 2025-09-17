@@ -95,10 +95,8 @@ namespace LinkedList
                 currNode = currNode.Next;
             }
         }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+        
 
         public int IndexOf(object obj)
         {
@@ -153,7 +151,7 @@ namespace LinkedList
             {
                 RemoveFirst();
             }
-            else if (node.Next == null)
+            else if (node.Next == null) 
             {
                 RemoveLast();
             }
@@ -174,9 +172,11 @@ namespace LinkedList
         {
             if (IsEmpty()) throw new InvalidOperationException("LinkedList is empty!!!");
             
-            T data = head!.Data;
+            Node<T> oldHead = head!;
+            T data = oldHead.Data;
             head = head.Next;
             size--;
+            
             if (IsEmpty())
             {
                 tail = null;
@@ -185,13 +185,20 @@ namespace LinkedList
             {
                 head!.Prev = null;
             }
+            
+            // Explicit cleanup - helps GC and prevents bugs
+            oldHead.Next = null;
+            oldHead.Prev = null;
+            oldHead.Data = default;
+            
             return data;
         }
         public T RemoveLast()
         {
             if (IsEmpty()) throw new InvalidOperationException("LinkedList is empty!!!");
 
-            T data = tail!.Data;
+            Node<T> oldTail = tail!;
+            T data = oldTail.Data;
             tail = tail.Prev;
             size--;
 
@@ -233,16 +240,16 @@ namespace LinkedList
         {
             if (index < 0 || index >= size) throw new ArgumentException("Index is out of range of DoublyLinkedList");
 
-            Node<T>? currNode = head;
+            Node<T>? currNode;
             int i;
 
             if (index < size / 2)
             {
-                i = 0;
                 currNode = head;
+                i = 0;
                 while (i != index)
                 {
-                    currNode = currNode.Next;
+                    currNode = currNode!.Next;
                     i++;
                 }
             }
@@ -252,12 +259,12 @@ namespace LinkedList
                 i = size - 1;
                 while (i != index)
                 {
-                    currNode = currNode.Prev;
+                    currNode = currNode!.Prev;
                     i--;
                 }
             }
 
-            return Remove(currNode);
+            return Remove(currNode!);
         }
 
         public override string ToString()

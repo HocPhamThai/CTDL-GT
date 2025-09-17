@@ -4,7 +4,7 @@ class Program
 {
     static void Main()
     {
-        var list = new DoublyLinkedList<int?>();
+        var list = new MyDoublyLinkedList<int?>();
 
         // Test AddLast và AddFirst
         list.Add(1);
